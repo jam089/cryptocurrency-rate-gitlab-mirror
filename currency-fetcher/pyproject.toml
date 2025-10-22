@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.119.1",
+    "httpx>=0.28.1",
     "pydantic>=2.12.3",
     "pydantic-settings>=2.11.0",
     "uvicorn>=0.38.0",
@@ -14,8 +15,53 @@ dependencies = [
 [dependency-groups]
 dev = [
     "black>=25.9.0",
-    "flake8>=7.3.0",
     "isort>=7.0.0",
     "mypy>=1.18.2",
     "pylint>=4.0.2",
 ]
+
+[tool.mypy]
+python_version = 3.12
+plugins = [
+    'pydantic.mypy',
+    ]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+strict_optional = true
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+combine_as_imports = true
+known_first_party = ["core", "services"]
+
+[tool.pylint."MASTER"]
+ignore = ["tests", ".venv"]
+load-plugins = ["pylint.extensions.docparams"]
+jobs = 1
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+    "R0914",  # too-many-locals
+#    "C0330",  # bad-continuation (Black сам управляет переносами)
+#    "C0326",  # bad-whitespace
+    "C0301",  # line-too-long — это как раз max-line-length
+    "C0303",  # trailing-whitespace
+    "C0304",  # missing-final-newline
+    "W0311",  # bad-indentation
+#    "W0312",  # mixed-indentation
+]
+
+[tool.pylint."TYPECHECK"]
+ignored-modules = ["pytest"]
