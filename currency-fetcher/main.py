@@ -1,6 +1,13 @@
-def main():
-    print("Hello from currency-fetcher!")
+from fastapi import FastAPI
+import uvicorn
+
+
+app = FastAPI()
 
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run(
+        "main:app",
+        host="localhost",
+        port=8000,
+    )
